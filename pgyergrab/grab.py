@@ -74,37 +74,39 @@ class PgyerGrab(object):
 
         app_title = plist['items'][0]['metadata']['title']
 
-        cwd = os.getcwd()
-
-        new_path = '%(cwd)s/%(app_title)s' % { 'cwd': cwd, 'app_title': app_title }
-        if not os.path.exists(new_path): 
-            os.makedirs(new_path)
-
         if save_files:
+            cwd = os.getcwd()
+
+            new_path = '%(cwd)s/%(app_title)s' % { 'cwd': cwd, 'app_title': app_title }
+            if not os.path.exists(new_path): 
+                os.makedirs(new_path)
+
+
             self.log('Saving .plist file...')
             writePlist(plist, '%s/Info.plist' % new_path)
 
-        image_file = requests.get(image_url, verify=False, stream=True, headers={
-            'user-agent': PgyerGrab.ITUNES_USER_AGENT
-        })
+            chunk_size = 1024
 
-        chunk_size = 1024
-
-        if save_files:
             self.log('Downloading icon...')
+
+            image_file = requests.get(image_url, verify=False, stream=True, headers={
+                'user-agent': PgyerGrab.ITUNES_USER_AGENT
+            })
+
             with open('%s/icon.png' % new_path, 'wb') as fd:
                 for chunk in image_file.iter_content(chunk_size):
                     fd.write(chunk)
 
-        ipa_file = requests.get(ipa_url, verify=False, stream=True, headers={
-            'user-agent': PgyerGrab.ITUNES_USER_AGENT
-        })
+            ipa_file = requests.get(ipa_url, verify=False, stream=True, headers={
+                'user-agent': PgyerGrab.ITUNES_USER_AGENT
+            })
 
-        if save_files:
             self.log('Downloading .ipa file...')
             with open('%s/app.ipa' % new_path, 'wb') as fd:
                 for chunk in ipa_file.iter_content(chunk_size):
                     fd.write(chunk)
+
+        return app_title, ipa_url, image_url, plist
 
 
 
