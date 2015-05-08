@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+from pgyergrab.grab import PgyerGrab
+from optparse import OptionParser
+
+parser = OptionParser()
+parser.add_option("-p", "--password", dest="password",
+                  help="password to access the app on Pgyer", metavar="PASSWORD")
+parser.add_option("-u", "--url", dest="app_link",
+                  help="link to the application published on Pgyer", metavar="URL")
+(options, args) = parser.parse_args()
+
+if not options.app_link:
+    print "Run `pgyer-grab -h` for usage help."
+else:
+    grabber = PgyerGrab(app_link=options.app_link, password=options.password)
+    grabber.grab()
