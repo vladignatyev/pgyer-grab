@@ -16,5 +16,5 @@ Features
 More
 ===
 
-Check out (BuildStore)[http://builds.io/]. It's Yet Another AppStore which doesn't require Jailbreak for aps installation.
+Check out [BuildStore](http://builds.io/). It's Yet Another AppStore which doesn't require Jailbreak for aps installation.
 
